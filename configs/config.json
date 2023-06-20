@@ -1,0 +1,135 @@
+{
+    "name": "MMFA",
+    "experim_name": "MMFA",
+    "num_class":21,
+    "dataset":"voc2012",
+    "n_gpu": 3,
+    "n_labeled_examples": 2645,
+    "log_dir":"",
+    "diff_lrs": true,
+    "ramp_up": 0.1,
+    "unsupervised_w": 30,
+    "ignore_index": 255,
+    "lr_scheduler": "Poly",
+    "use_weak_lables":false,
+    "weakly_loss_w": 0.4,
+    "pretrained": true,
+    "sup_only_epoch":2,
+    "drop_percent":80,
+    "ema_decay":0.99,
+
+    "model":{
+        "supervised": false,
+        "semi": true,
+        "supervised_w": 1,
+        "sup_loss": "CE",
+        "un_loss": "MSE",
+
+        "softmax_temp": 1,
+        "aux_constraint": false,
+        "aux_constraint_w": 1,
+        "confidence_masking": false,
+        "confidence_th": 0.5,
+
+        "drop": 6,
+        "drop_rate": 0.5,
+        "spatial": true,
+    
+        "cutout": 6,
+        "erase": 0.4,
+    
+        "vat": 2,
+        "xi": 1e-6,
+        "eps": 2.0,
+
+        "context_masking": 2,
+        "object_masking": 2,
+        "feature_drop": 6,
+
+        "feature_noise": 6,
+        "uniform_range": 0.3
+    },
+
+
+    "optimizer": {
+        "type": "SGD",
+        "args":{
+            "lr": 1e-2,
+            "weight_decay": 1e-4,
+            "momentum": 0.9
+        }
+    },
+    "train_supervised": {
+        "data_dir": "",
+        "mean":[0.485, 0.456, 0.406],
+        "std":[0.229, 0.224, 0.225],
+        "ignore_index": 255,
+        "batch_size": 16,
+        "crop_size": 320,
+        "base_size": 400,
+        "scale": true,
+        "augment": true,
+        "flip": true,
+        "rotate": false,
+        "blur": false,
+        "split": "train_supervised"
+
+    },
+
+    "train_unsupervised": {
+        "data_dir": "",
+        "weak_labels_output": "",
+        "mean":[0.485, 0.456, 0.406],
+        "std":[0.229, 0.224, 0.225],
+        "ignore_index": 255,
+        "batch_size": 16,
+        "crop_size": 320,
+        "base_size": 400,
+        "scale": true,
+        "augment": true,
+        "flip": true,
+        "rotate": false,
+        "blur": false,
+        "split": "train_unsupervised"
+    },
+
+    "val_loader": {
+        "mean":[0.485, 0.456, 0.406],
+        "std":[0.229, 0.224, 0.225],
+        "ignore_index": 255,
+        "data_dir": "",
+        "batch_size": 1,
+        "val": true,
+        "split": "val"
+
+    },
+
+    "trainer": {
+        "epochs": 400,
+
+        "save_dir": "saved/",
+        "save_period": 1,
+  
+        "monitor": "max Mean_IoU",
+        "early_stop": 10,
+        
+        "tensorboardX": true,
+        "log_dir": "saved/",
+        "log_per_iter": 20,
+
+        "val": true,
+        "val_per_epochs": 1
+    },
+    "contrastive":{
+        "negative_high_entropy": true,
+        "low_rank": 3,
+        "high_rank": 20,
+        "current_class_threshold": 0.3,
+        "current_class_negative_threshold": 1,
+        "unsupervised_entropy_ignore": 80,
+        "low_entropy_threshold": 20,
+        "num_negatives": 50,
+        "num_queries": 256,
+        "temperature": 0.5
+    }
+}

@@ -1,0 +1,120 @@
+{
+    "name": "MMFA",
+    "experim_name": "MMFA",
+    "num_class":19,
+    "dataset":"Cityscapes",
+    "n_gpu": 3,
+    "n_labeled_examples": 2975,
+    "log_dir":"",
+    "diff_lrs": true,
+    "ramp_up": 0.1,
+    "unsupervised_w": 30,
+    "ignore_index": 255,
+    "lr_scheduler": "Poly",
+    "use_weak_lables":false,
+    "weakly_loss_w": 0.4,
+    "pretrained": true,
+    "sup_only_epoch":2,
+    "drop_percent":80,
+    "ema_decay":0.99,
+
+    "model":{
+        "supervised": false,
+        "semi": true,
+        "supervised_w": 1,
+        "sup_loss": "CE",
+        "un_loss": "MSE",
+
+        "softmax_temp": 1,
+        "aux_constraint": false,
+        "aux_constraint_w": 1,
+        "confidence_masking": false,
+        "confidence_th": 0.5,
+
+        "drop": 6,
+        "drop_rate": 0.5,
+        "spatial": true,
+    
+        "cutout": 6,
+        "erase": 0.4,
+    
+        "vat": 2,
+        "xi": 1e-6,
+        "eps": 2.0,
+
+        "context_masking": 2,
+        "object_masking": 2,
+        "feature_drop": 6,
+
+        "feature_noise": 6,
+        "uniform_range": 0.3
+    },
+
+    "optimizer": {
+        "type": "SGD",
+        "args":{
+            "lr": 1e-2,
+            "weight_decay": 5e-4,
+            "momentum": 0.9
+        }
+    },
+    "datasets": {
+        "n_sup":1488,
+        "train":{
+            "data_dir": "",
+            "data_list": "",
+            "flip":true,
+            "batch_size": 15,
+            "GaussianBlur":false,
+            "rand_resize":[0.5,2],
+            "crop":{
+                "type":"rand",
+                "size":[769,769]
+            }
+        },
+        "val":{
+            "data_dir": "",
+            "data_list": "",
+            "crop":{
+                "type":"center",
+                "size":[769,769]
+            }
+        },
+        "batch_size":15,
+        "mean": [123.675, 116.28, 103.53],
+        "std": [58.395, 57.12, 57.375],
+        
+        "ignore_label": 255,
+        "noise_std":0.1,
+        "worker":0
+    },
+
+    "trainer": {
+        "epochs": 400,
+
+        "save_dir": "saved/",
+        "save_period": 1,
+  
+        "monitor": "max Mean_IoU",
+        "early_stop": 10,
+        
+        "tensorboardX": true,
+        "log_dir": "saved/",
+        "log_per_iter": 20,
+
+        "val": true,
+        "val_per_epochs": 1
+    },
+    "contrastive":{
+        "negative_high_entropy": true,
+        "low_rank": 3,
+        "high_rank": 20,
+        "current_class_threshold": 0.3,
+        "current_class_negative_threshold": 1,
+        "unsupervised_entropy_ignore": 80,
+        "low_entropy_threshold": 20,
+        "num_negatives": 50,
+        "num_queries": 256,
+        "temperature": 0.5
+    }
+}
